@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace App\BackOffice\Entity;
 
-use App\Repository\CategorieRepository;
+use App\BackOffice\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -82,5 +82,4 @@ class Categorie
     {
         return $this->getName();
     }
-
 }

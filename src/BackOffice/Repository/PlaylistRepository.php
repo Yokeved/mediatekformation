@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace App\BackOffice\Repository;
 
-use App\Entity\Playlist;
+use App\BackOffice\Entity\Playlist;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -67,8 +67,7 @@ class PlaylistRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    /**
+   /**
     * Enregistrements dont un champ contient une valeur
     * ou tous les enregistrements si la valeur est vide
     * @param type $champ
@@ -104,6 +103,4 @@ class PlaylistRepository extends ServiceEntityRepository
    
             
     }
-
-    
 }

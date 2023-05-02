@@ -16,6 +16,12 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
+            App\BackOffice:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/BackOffice/Entity'
+                prefix: 'App\BackOffice\Entity'
+                alias: App\BackOffice
+
 when@test:
     doctrine:
         dbal:

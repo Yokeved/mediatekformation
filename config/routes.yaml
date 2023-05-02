@@ -1,3 +1,87 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+# config/routes.yaml
+
+acceuil:
+    path: /
+    controller: App\Controller\FormationsController::index
+
+formations:
+   path: /formations
+   controller: App\Controller\FormationsController::index
+
+playlists:
+   path: /playlists
+   controller: App\Controller\PlaylistsController::index
+
+cgu:
+   path: /cgu
+   controller: App\Controller\AccueilController::cgu
+
+accueilbackoffice:
+   path: /backoffice
+   controller: App\BackOffice\Controller\AccueilController::index
+
+cgubackoffice:
+   path: /backoffice/cgu
+   controller: App\BackOffice\Controller\AccueilController::cgu
+
+formationsbackoffice:
+   path: /backoffice/formations
+   controller: App\BackOffice\Controller\FormationsController::index
+
+formationsbackoffice.sort:
+   path: /backoffice/formations/tri/{champ}/{ordre}
+   controller: App\BackOffice\Controller\FormationsController::sort
+
+formationsbackoffice.sortInTable:
+   path: /backoffice/formations/tri/{champ}/{ordre}/{table}
+   controller: App\BackOffice\Controller\FormationsController::sortInTable
+
+formationsbackoffice.findallcontain:
+   path: /backoffice/formations/recherche/{champ}
+   controller: App\BackOffice\Controller\FormationsController::findallcontain
+
+formationsbackoffice.findallcontainInTable:
+   path: /backoffice/formations/recherche/{champ}/{table}
+   controller: App\BackOffice\Controller\FormationsController::findallcontainInTable
+
+formationsbackoffice.delete:
+    path: /backoffice/formations/formation/{id}
+    controller: 'App\BackOffice\Controller\FormationsController::delete'
+    methods: ['POST']
+   
+formationsbackoffice.edit:
+    path: /backoffice/formationedit/{id}
+    controller: 'App\BackOffice\Controller\FormationsController::edit'
+
+formationsbackoffice.showone:
+    path: /backoffice/formations/formation/{id}
+    controller: App\BackOffice\Controller\FormationsController::showOne
+
+playlistsbackoffice:
+   path: /backoffice/playlists
+   controller: App\BackOffice\Controller\PlaylistsController::index
+
+playlistsbackoffice.sort:
+   path: /backoffice/playlists/tri/{champ}/{ordre}
+   controller: App\BackOffice\Controller\PlaylistsController::sort
+
+playlistsbackoffice.showone:
+   path: /backoffice/playlists/playlist/{id}
+   controller: App\BackOffice\Controller\PlaylistsController::showOne
+
+playlistsbackoffice.findallcontain:
+   path: /backoffice/playlists/recherche/{champ}
+   controller: App\BackOffice\Controller\PlaylistsController::findallcontain
+
+playlistsbackoffice.findallcontainInTable:
+   path: /backoffice/playlists/recherche/{champ}/{table}
+   controller: App\BackOffice\Controller\PlaylistsController::findallcontainInTable
+
+playlistsbackoffice.delete:
+   path: /backoffice/playlists/{id}
+   controller: App\BackOffice\Controller\PlaylistsController::delete
+
+playlistsbackoffice.add:
+   path: /backoffice/playlists/playlist
+   controller: App\BackOffice\Controller\PlaylistsController::add
+

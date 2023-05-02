@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace App\BackOffice\Repository;
 
-use App\Entity\Formation;
+use App\BackOffice\Entity\Formation;
+use App\BackOffice\Controller\FormationsController;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

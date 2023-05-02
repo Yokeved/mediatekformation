@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace App\BackOffice\Entity;
 
-use App\Repository\PlaylistRepository;
+use App\BackOffice\Repository\PlaylistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -88,17 +88,15 @@ class Playlist
 
     public function removeFormation(Formation $formation): self
     {
-        if ($this->formations->removeElement($formation)) {
+        if ($this->formations->removeElement($formation) && $formation->getPlaylist() === $this) {
             // set the owning side to null (unless already changed)
-            if ($formation->getPlaylist() === $this) {
                 $formation->setPlaylist(null);
-            }
         }
 
         return $this;
     }
 
-    /**
+     /**
      * @return Collection<int, Categorie>
      */
     public function getCategoriesPlaylist(): Collection
@@ -114,6 +112,5 @@ class Playlist
         }
         return $categories;
     }
-
 
 }

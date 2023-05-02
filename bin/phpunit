@@ -7,7 +7,7 @@ if (!ini_get('date.timezone')) {
 
 if (is_file(dirname(__DIR__).'/vendor/phpunit/phpunit/phpunit')) {
     define('PHPUNIT_COMPOSER_INSTALL', dirname(__DIR__).'/vendor/autoload.php');
-    require PHPUNIT_COMPOSER_INSTALL;
+    require_once PHPUNIT_COMPOSER_INSTALL;
     PHPUnit\TextUI\Command::main();
 } else {
     if (!is_file(dirname(__DIR__).'/vendor/symfony/phpunit-bridge/bin/simple-phpunit.php')) {
@@ -15,5 +15,5 @@ if (is_file(dirname(__DIR__).'/vendor/phpunit/phpunit/phpunit')) {
         exit(1);
     }
 
-    require dirname(__DIR__).'/vendor/symfony/phpunit-bridge/bin/simple-phpunit.php';
+    require_once dirname(__DIR__).'/vendor/symfony/phpunit-bridge/bin/simple-phpunit.php';
 }

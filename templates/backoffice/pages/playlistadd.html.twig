@@ -1,0 +1,32 @@
+{% extends "backoffice/baseback.html.twig" %}
+{% block body %}
+    <div class="row mt-3">
+        <div class="col">
+            <style>
+                .form-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 2fr;
+                    grid-column-gap: 10px;
+                }
+            </style>
+
+        <h4 class="text-info mt-5">
+            <form method="post" action="{{ path('playlistsbackoffice.add') }}" class="form-grid">
+                <label for="title" style="grid-column: 1;">Nom :</label>
+                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="name" name="name" value="" required style="grid-column: 2;"><br>
+                
+    <div class="row mt-3">
+        <div class="col">
+            <h4 class="text-info mt-5">{{ playlist.name }}</h4>
+            <strong>catégories : </strong>
+                <!-- boucle pour afficher les catégories -->
+                {% set anccategorie = '' %}
+                {% for playlist in playlistcategories %}
+                    {{ playlist.name }}&nbsp;
+                {% endfor %}
+            <br /><br />
+            <strong>description :</strong><br />
+                {{ playlist.description|nl2br }}
+        </div>
+    </div>
+{% endblock %}

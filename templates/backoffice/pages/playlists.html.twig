@@ -1,4 +1,4 @@
-{% extends "basefront.html.twig" %}
+{% extends "backoffice/baseback.html.twig" %}
 {% block body %}
     <table class="table table-striped">
     <caption>Playlist</caption>
@@ -6,9 +6,9 @@
             <tr>
                 <th class="text-left align-top" scope="col">
                     playlist<br />
-                    <a href="{{ path('playlists.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('playlists.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
-                    <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findallcontain', {champ:'name'}) }}">
+                    <a href="{{ path('playlistsbackoffice.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('playlistsbackoffice.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('playlistsbackoffice.findallcontain', {champ:'name'}) }}">
                         <div class="form-group mr-1 mb-2">
                             <input type="text" class="sm" name="recherche" 
                                    value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
@@ -19,7 +19,7 @@
                 </th>
                 <th class="text-left align-top" scope="col">
                     catégories
-                    <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findallcontain', {champ:'id', table:'categories'}) }}">
+                    <form class="form-inline mt-1" method="POST" action="{{ path('playlistsbackoffice.findallcontainInTable', {champ:'id', table:'categories'}) }}">
                         <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
                             <option value=""></option>
                             {% for categorie in categories %}
@@ -35,8 +35,8 @@
                 </th>
                 <th class="text-left align-top" scope="col">
                     nb formations<br />
-                    <a href="{{ path('playlists.sort', {champ:'nbformations', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('playlists.sort', {champ:'nbformations', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                  
+                    <a href="{{ path('playlistsbackoffice.sort', {champ:'nbformations', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('playlistsbackoffice.sort', {champ:'nbformations', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                  
                 </th>
                 <th class="text-center align-top" scope="col">
                     &nbsp;
@@ -64,7 +64,21 @@
                             {{ playlists[k].formations|length }}
                         </td>
                         <td class="text-center">
-                            <a href="{{ path('playlists.showone', {id:playlists[k].id}) }}" class="btn btn-secondary">Voir détail</a>
+                            <a href="{{ path('playlistsbackoffice.showone', {id:playlists[k].id}) }}" class="btn btn-secondary">Voir détail</a>
+                        </td>
+                        <td class="text-center">
+                            <form action="{{ path('playlistsbackoffice.delete', {id:playlists[k].id}) }}" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer cette playlist ?')">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-playlists' ~ playlists[k].id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                        <td class="text-center">
+                                <form action="{{ path('playlistsbackoffice.edit', {id:playlists[k].id}) }}" >
+                                    <input type="hidden" name="_method" value="EDIT">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('edit-playlists' ~ playlists[k].id) }}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Modifier</button>
+                                </form>                    
                         </td>
                     </tr>
                 {% endfor %}

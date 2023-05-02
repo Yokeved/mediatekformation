@@ -1,4 +1,4 @@
-{% extends "basefront.html.twig" %}
+{% extends "backoffice/baseback.html.twig" %}
 {% block body %}
     <div class="row mt-3">
         <div class="col">
@@ -15,8 +15,6 @@
             <br /><br />
             <strong>description :</strong><br />
                 {{ playlist.description|nl2br }}
-            
-
         </div>
         <div class="col">
             <!-- boucle sur l'affichage des formations -->
@@ -24,13 +22,13 @@
                 <div class="row mt-1">
                     <div class="col-md-auto">
                         {% if formation.miniature %}
-                            <a href="{{ path('formations.showone', {id:formation.id}) }}">
+                            <a href="{{ path('formationsbackoffice.showone', {id:formation.id}) }}">
                                 <img src="{{ formation.miniature }}" alt="formation-miniature>
                             </a>
                         {% endif %}  
                     </div>
                     <div class="col d-flex align-items-center">
-                        <a href="{{ path('formations.showone', {id:formation.id}) }}" 
+                        <a href="{{ path('formationsbackoffice.showone', {id:formation.id}) }}" 
                            class="link-secondary text-decoration-none">
                             {{ formation.title }}
                         </a>          
