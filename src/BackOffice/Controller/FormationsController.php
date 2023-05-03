@@ -215,5 +215,23 @@ class FormationsController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/backoffice/formationadd", name="playlistsbackoffice.add")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $formations = $this->formationRepository->findAll();
+        $playlists = $this->playlistRepository->findAll();
+        $categories = $this->categorieRepository->findAll();
 
+
+        return $this->render('backoffice/pages/formationadd.html.twig', [
+            'formations' => $formations,
+            'playlists' => $playlists,
+            'categories'    =>$categories
+        ]);
+    }
 }

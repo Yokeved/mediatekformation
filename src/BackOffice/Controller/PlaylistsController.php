@@ -168,25 +168,47 @@ class PlaylistsController extends AbstractController
     /**
      * @Route("/backoffice/playlistadd", name="playlistsbackoffice.add")
      * @param Request $request
-     * @param int $id
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function add(Request $request, int $id, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
         $formations = $this->formationRepository->findAll();
-        $playlist = $this->playlistRepository->find($id);
         $playlists = $this->playlistRepository->findAll();
 
 
         return $this->render('backoffice/pages/playlistadd.html.twig', [
             'formations' => $formations,
-            'categories' => $categories,
             'playlists' => $playlists,
-            'playlist' => $playlist,
         ]);
     }
 
+    
+    /**
+     * @Route("/backoffice/playlistedit", name="playlistsbackoffice.edit")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param int $id
+     * @return Response
+     */
+    public function edit(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $formations = $this->formationRepository->findAll();
+        $playlists = $this->playlistRepository->findAll();
+        $playlist = $this->playlistRepository->find($id);
+        $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
+        $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
+
+        $entityManager->flush();
+
+        return $this->render('backoffice/pages/playlistedit.html.twig', [
+            'formations' => $formations,
+            'playlists' => $playlists,
+            'playlist'  => $playlist,
+            'playlistcategories' => $playlistCategories,
+            'playlistformations' => $playlistFormations
+        ]);
+    }
 
 }
 

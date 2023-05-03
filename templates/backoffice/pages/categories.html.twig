@@ -1,0 +1,44 @@
+{% extends "backoffice/baseback.html.twig" %}
+{% block body %}
+<br>
+<form method="post" action="{{ path('categoriesbackoffice.add') }}">
+    <div class="mb-3 row">
+    <label for="title" class="col-sm-2 col-form-label"><strong>Nom :</strong></label>
+    <div class="col-sm-7">
+      <input type="name" class="form-control" id="name" required >
+    </div>
+    <div class="col-sm-3">
+        <input type="submit" value="Ajouter categorie" class="btn btn-secondary ">
+    </div> 
+</form><br>
+<br><br>
+<table class="table table-striped">
+    <caption>Categories</caption>
+    <thead>
+        <th class="text-left align-top" scope="col">
+                    Categories<br />
+            <br><br> 
+        </th>
+    </thead>
+    <tbody>
+        {% for categorie in categories %}
+        <tr class="align-middle">
+            <td class="text-left">
+                <h5 class="text-info">
+                    {{ categorie.name }}
+                </h5>
+            </td>
+            <td class="text-center">
+                <form action="{{ path('categoriesbackoffice.delete', {id:categorie.id}) }}" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer cette categorie ?')">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete-categories' ~ categorie.id) }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+</table>
+
+{% endblock %}

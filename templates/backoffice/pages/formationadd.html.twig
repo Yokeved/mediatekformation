@@ -12,21 +12,18 @@
             </style>
 
         <h4 class="text-info mt-5">
-            <form method="post" action="{{ path('formationsbackoffice.edit', {id: formation.id}) }}" class="form-grid">
+            <form method="post" action="{{ path('formationsbackoffice.add') }}" class="form-grid">
                 <label for="title" style="grid-column: 1;">Titre :</label>
-                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="title" name="title" value="{{ formation.title }}" required style="grid-column: 2;"><br>
+                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="title" name="title" value="" required style="grid-column: 2;"><br>
                 <label for="description" style="grid-column: 1;">Description :</label>
-                <textarea class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="description" name="description" style="grid-column: 2;">{{ formation.description }}</textarea><br>
+                <textarea class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="description" name="description" style="grid-column: 2;"></textarea><br>
                 <label for="videoid" style="grid-column: 1;">ID de la vidéo YouTube :</label>
-                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" type="url" id="videoid" name="videoid" value="{{ formation.videoid }}" required style="grid-column: 2;"><br>
+                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" type="url" id="videoid" name="videoid" value="" required style="grid-column: 2;"><br>
                 <label for="playlist" style="grid-column: 1;">Playlist :</label>
                     <select class="form-select form-select-lg form-control" required name="recherche" id="recherche" onchange="this.form.submit()">
                             <option value=""></option>
                             {% for playlist in playlists %}
                                 <option 
-                                     {% if formation.playlist and formation.playlist.id == playlist.id %} 
-                                        selected
-                                    {% endif %} 
                                     value="{{ playlist.id }}">{{ playlist.name }}
                                 </option>
                             {% endfor %}
@@ -36,21 +33,13 @@
                 <div class="form-select form-select-lg form-control" style="grid-column: 2;">
                     {% for categorie in categories %}
                         <div>
-                            {% if formation_categorie %}
-                                {% if categorie.id in formation_categorie %}
-                                    <input class="form-check-input" type="checkbox" id="categorie-{{ categorie.id }}" name="categories[]" value="{{ categorie.id }}" checked>
-                                {% else %}
-                                    <input class="form-check-input" type="checkbox" id="categorie-{{ categorie.id }}" name="categories[]" value="{{ categorie.id }}">
-                                {% endif %}
-                            {% else %}
-                                <input class="form-check-input" type="checkbox" id="categorie-{{ categorie.id }}" name="categories[]" value="{{ categorie.id }}">
-                            {% endif %}
+                            <input class="form-check-input" type="checkbox" id="categorie-{{ categorie.id }}" name="categories[]" value="{{ categorie.id }}">
                             <label class="form-check-label" for="categorie-{{ categorie.id }}">{{ categorie.name }}</label>
                         </div>
                     {% endfor %}
                 </div><br>
                 <label for="publishedatstring" style="grid-column: 1;">Publié le :</label>
-                <input class="form-control form-control-lg" type="date" id="published" name="datetime" value="{{ formation.publishedatstring|date('Y-m-d') }}" max="{{ 'now'|date('Y-m-d') }}" style="grid-column: 2;"><br>
+                <input class="form-control form-control-lg" type="date" id="published" name="datetime" value="" max="{{ 'now'|date('Y-m-d') }}" style="grid-column: 2;"><br>
                 <div style="text-align: center;">
                 <br><br>
                     <input type="submit" value="Enregister" class="btn btn-secondary ">

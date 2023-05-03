@@ -53,6 +53,10 @@ formationsbackoffice.edit:
     path: /backoffice/formationedit/{id}
     controller: 'App\BackOffice\Controller\FormationsController::edit'
 
+formationsbackoffice.add:
+    path: /backoffice/formationadd
+    controller: 'App\BackOffice\Controller\FormationsController::add'
+
 formationsbackoffice.showone:
     path: /backoffice/formations/formation/{id}
     controller: App\BackOffice\Controller\FormationsController::showOne
@@ -82,6 +86,21 @@ playlistsbackoffice.delete:
    controller: App\BackOffice\Controller\PlaylistsController::delete
 
 playlistsbackoffice.add:
-   path: /backoffice/playlists/playlist
+   path: /backoffice/playlistsadd
    controller: App\BackOffice\Controller\PlaylistsController::add
 
+playlistsbackoffice.edit:
+   path: /backoffice/playlistsedit/{id}
+   controller: App\BackOffice\Controller\PlaylistsController::edit
+
+categoriesbackoffice:
+   path: /backoffice/categories
+   controller: App\BackOffice\Controller\CategoriesController::index
+
+categoriesbackoffice.delete:
+   path: /backoffice/categories/{id}
+   controller: App\BackOffice\Controller\CategoriesController::delete
+
+categoriesbackoffice.add:
+   path: /backoffice/categoriesadd
+   controller: App\BackOffice\Controller\CategoriesController::add
