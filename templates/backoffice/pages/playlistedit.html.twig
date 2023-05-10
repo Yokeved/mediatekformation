@@ -1,44 +1,45 @@
 {% extends "backoffice/baseback.html.twig" %}
 {% block body %}
-    <div class="row mt-3">
-        <div class="col">
-            <style>
-                .form-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 2fr;
-                    grid-column-gap: 10px;
-                }
-            </style>
-
-        <h4 class="text-info mt-5">
-            <form method="post" action="{{ path('playlistsbackoffice.add') }}" class="form-grid">
-                <label for="title" style="grid-column: 1;">Nom :</label>
-                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="name" name="name" value="{{playlist.name}}" required style="grid-column: 2;"><br>
-                <label for="description" style="grid-column: 1;">Description :</label>
-                <textarea class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="description" name="description" style="grid-column: 2;">{{playlist.description}}</textarea><br>    
-            </form>
-            <div class="col">
-            <!-- boucle sur l'affichage des formations -->
-            {% for formation in playlistformations %}
-                <div class="row mt-1">
-                    <div class="col-md-auto">
-                        {% if formation.miniature %}
-                            <a href="{{ path('formationsbackoffice.showone', {id:formation.id}) }}">
-                                <img src="{{ formation.miniature }}" alt="formation-miniature>
-                            </a>
-                        {% endif %}  
-                    </div>
-                    <div class="col d-flex align-items-center">
-                        <a href="{{ path('formationsbackoffice.showone', {id:formation.id}) }}" 
-                           class="link-secondary text-decoration-none">
-                            {{ formation.title }}
-                        </a>          
-                    </div>
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            grid-column-gap: 10px;
+        }
+    </style>
+     <div> 
+     <h4 class="text-info mt-5">  
+        <form method="post" action="{{ path('playlistsbackoffice.edit', {id:playlist.id}) }}" class="form-grid">
+            {{ form_start(form) }}
+                {{ form_row(form.name, {'attr': {'value': playlist.name}}) }}
+                {{ form_row(form.description, {'attr': {'value': playlist.description}}) }}
+                {{ form_widget(form)}}
+                 <div style="text-align: center;">
+                    <br><br>
+                    <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
                 </div>
-            {% endfor %}
-        </div>
-        <div style="text-align: center;">
-            <br><br>
-            <input type="submit" value="Enregistrer" class="btn btn-secondary ">
-        </div> 
+            {{ form_end(form) }}
+        </form>
+     </h4>        
+    </div>
+    <div>
+        <!-- boucle sur l'affichage des formations -->
+        {% for formation in playlistformations %}
+            <div class="row mt-1">
+                <div class="col-md-auto">
+                    {% if formation.miniature %}
+                        <a href="{{ path('formationsbackoffice.showone', {id:formation.id}) }}">
+                            <img src="{{ formation.miniature }}" alt="formation-miniature>
+                        </a>
+                    {% endif %}  
+                </div>
+                <div class="col d-flex align-items-center">
+                    <a href="{{ path('formationsbackoffice.showone', {id:formation.id}) }}" 
+                       class="link-secondary text-decoration-none">
+                        {{ formation.title }}
+                    </a>          
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

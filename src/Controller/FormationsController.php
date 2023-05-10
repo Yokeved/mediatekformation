@@ -36,6 +36,8 @@ class FormationsController extends AbstractController
         $this->categorieRepository= $categorieRepository;
     }
     
+    public const FORMATIONS_TEMPLATE = 'pages/formations.html.twig';
+
     /**
      * @Route("/formations", name="formations")
      * @return Response
@@ -44,7 +46,7 @@ class FormationsController extends AbstractController
     {
         $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/formations.html.twig", [
+        return $this->render(self::FORMATIONS_TEMPLATE, [
             'formations' => $formations,
             'categories' => $categories
         ]);
@@ -65,7 +67,7 @@ class FormationsController extends AbstractController
             $formations = $this->formationRepository->findAllOrderByInTable($champ, $ordre, $table);
         }
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/formations.html.twig", [
+        return $this->render(self::FORMATIONS_TEMPLATE, [
             'formations' => $formations,
             'categories' => $categories
         ]);
@@ -87,7 +89,7 @@ class FormationsController extends AbstractController
             $formations = $this->formationRepository->findByContainValueInTable($champ, $valeur, $table);
         }
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/formations.html.twig", [
+        return $this->render(self::FORMATIONS_TEMPLATE, [
             'formations' => $formations,
             'categories' => $categories,
             'valeur' => $valeur,

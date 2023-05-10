@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\BackOffice\Form\FormationType;
+use Symfony\Component\Form\AbstractType;
+
 
 /**
  * Controleur des formations
@@ -37,6 +40,8 @@ class FormationsController extends AbstractController
      */
     private $playlistRepository;
 
+    public const FORMATIONS_TEMPLATE = 'backoffice/pages/formations.html.twig';
+
     
     public function __construct(
         FormationRepository $formationRepository,
@@ -57,7 +62,7 @@ class FormationsController extends AbstractController
         $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
         $playlists  = $this->playlistRepository->findAll();
-        return $this->render("backoffice/pages/formations.html.twig", [
+        return $this->render(self::FORMATIONS_TEMPLATE, [
             'formations' => $formations,
             'categories' => $categories,
             'playlists'  => $playlists
@@ -75,7 +80,7 @@ class FormationsController extends AbstractController
     {
         $formations = $this->formationRepository->findAllOrderBy($champ, $ordre);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("backoffice/pages/formations.html.twig", [
+        return $this->render(self::FORMATIONS_TEMPLATE, [
             'formations' => $formations,
             'categories' => $categories
         ]);
@@ -92,7 +97,7 @@ class FormationsController extends AbstractController
     {
         $formations = $this->formationRepository->findAllOrderByInTable($champ, $ordre, $table);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("backoffice/pages/formations.html.twig", [
+        return $this->render(self::FORMATIONS_TEMPLATE, [
             'formations' => $formations,
             'categories' => $categories
         ]);
@@ -112,7 +117,7 @@ class FormationsController extends AbstractController
 
         $formations = $this->formationRepository->findByContainValue($champ, $valeur);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("backoffice/pages/formations.html.twig", [
+        return $this->render(self::FORMATIONS_TEMPLATE, [
             'formations' => $formations,
             'categories' => $categories,
             'valeur' => $valeur,
@@ -133,7 +138,7 @@ class FormationsController extends AbstractController
         $formations = $this->formationRepository->findByContainValueInTable($champ, $valeur, $table);
 
         $categories = $this->categorieRepository->findAll();
-        return $this->render("backoffice/pages/formations.html.twig", [
+        return $this->render(self::FORMATIONS_TEMPLATE, [
             'formations' => $formations,
             'categories' => $categories,
             'valeur' => $valeur,
@@ -180,6 +185,7 @@ class FormationsController extends AbstractController
      * @Route("/backoffice/formations/formation/edit/{id}", name="formations.edit")
      * @param Request $request
      * @param int $id
+     * @param for
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
@@ -191,19 +197,28 @@ class FormationsController extends AbstractController
         $formation_categorie = $this->formationRepository->find($id);
         $playlists = $this->playlistRepository->findAll();
 
-        if (!$formation) {
-            throw $this->createNotFoundException('Formation non trouvée');
-        }
-
-        $form = $this->createForm(Formation::class, $formation);
+        $form = $this->createForm(FormationType::class, $formations);
+ 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+        $title = $form->get('title')->getData();
+        $description = $form->get('description')->getData();
+        $videoId = $form->get('videoId')->getData();
+        $publishedatstring = $form->get('publishedatstring')->getData();
+
+        $formation->setTitle($title);
+        $formation->setVideoId($videoId);
+        $formation->setPublishedAt($publishedatstring);
+        $formation->setDescription($description);
+
+        $entityManager->persist($formation);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Formation mise à jour avec succès');
-            return $this->redirectToRoute('formations.list');
-        }
+        return $this->redirectToRoute('formationsbackoffice');
+    }
+
+    $entityManager->flush();
 
         return $this->render('backoffice/pages/formationedit.html.twig', [
             'form' => $form->createView(),
@@ -213,6 +228,7 @@ class FormationsController extends AbstractController
             'formation' => $formation,
             'formation_categorie' => $formation_categorie
         ]);
+        
     }
 
     /**
@@ -221,17 +237,38 @@ class FormationsController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $formations = $this->formationRepository->findAll();
-        $playlists = $this->playlistRepository->findAll();
-        $categories = $this->categorieRepository->findAll();
+   
+     public function add(Request $request, EntityManagerInterface $entityManager): Response
+     {
+         $formation = new formation();
+         $form = $this->createForm(FormationType::class, $formation);
+ 
+         $form->handleRequest($request);
+ 
+         if ($form->isSubmitted() && $form->isValid()) {
+            $title = $form->get('title')->getData();
+            $description = $form->get('description')->getData();
+            $videoId = $form->get('videoId')->getData();
+            $publishedatstring = $form->get('publishedatstring')->getData();
+
+            $formation->setTitle($title);
+            $formation->setVideoId($videoId);
+            $formation->setPublishedAt($publishedatstring);
+            $formation->setDescription($description);
 
 
+            $formation->setTitle($title);
+            $formation->setDescription($description);
+            $entityManager->persist($formation);
+            $entityManager->flush();
+        
+            $this->addFlash('success', 'Playlist ajoutée avec succès !');
+        
+            return $this->redirectToRoute('formationsbackoffice');
+        }
+ 
         return $this->render('backoffice/pages/formationadd.html.twig', [
-            'formations' => $formations,
-            'playlists' => $playlists,
-            'categories'    =>$categories
+            'form' => $form->createView(),
         ]);
     }
 }

@@ -104,3 +104,4 @@ categoriesbackoffice.delete:
 categoriesbackoffice.add:
    path: /backoffice/categoriesadd
    controller: App\BackOffice\Controller\CategoriesController::add
+

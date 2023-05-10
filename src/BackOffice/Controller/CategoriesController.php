@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\BackOffice\Form\CategorieType;
+
 
 /**
  * Controleur des formations
@@ -59,6 +61,7 @@ class CategoriesController extends AbstractController
         $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
         $playlists  = $this->playlistRepository->findAll();
+
         return $this->render("backoffice/pages/categories.html.twig", [
             'formations' => $formations,
             'categories' => $categories,
@@ -98,26 +101,33 @@ class CategoriesController extends AbstractController
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
         $categories = $this->categorieRepository->findAll();
-        
-        if ($request->isMethod('POST')) {
-            $name = $request->request->get('name');
+        $categorie = new Categorie();
+        $form = $this->createForm(CategorieType::class, $categorie);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $name = $form->get('name')->getData();
             $existingCat = $this->categorieRepository->findBy(['name' => $name]);
-        
+
             if (!$existingCat) { // Si aucune catégorie n'existe avec ce nom
-            $categorie = new Categorie();
-            $categorie->setName($name);
-            $entityManager->persist($categorie);
-            $entityManager->flush();
-       
-            $this->addFlash('success', 'Catégorie ajoutée avec succès !');
-        } else {
-            $this->addFlash('error', 'Une catégorie avec ce nom existe déjà.');
+                $categorie->setName($name);
+                $entityManager->persist($categorie);
+                $entityManager->flush();
+                $this->addFlash('success', 'Categorie ajoutée avec succès !');
+                return $this->redirectToRoute('categoriesbackoffice');
+            } else {
+                $this->addFlash('error', 'Une catégorie avec ce nom existe déjà.');
+            }
+        } elseif ($form->isSubmitted()) {
+            $this->addFlash('error', 'Le formulaire n\'est pas valide.');
         }
-       
-        return $this->render('backoffice/pages/categories.html.twig', [
-            'categories'    =>$categories
+    
+        return $this->render('backoffice/pages/categorieadd.html.twig', [
+            'categories' => $categories,
+            'form' => $form->createView()
         ]);
     }
 
 }
-}
+

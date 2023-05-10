@@ -1,16 +1,11 @@
 {% extends "backoffice/baseback.html.twig" %}
 {% block body %}
 <br>
-<form method="post" action="{{ path('categoriesbackoffice.add') }}">
-    <div class="mb-3 row">
-    <label for="title" class="col-sm-2 col-form-label"><strong>Nom :</strong></label>
-    <div class="col-sm-7">
-      <input type="name" class="form-control" id="name" required >
-    </div>
-    <div class="col-sm-3">
-        <input type="submit" value="Ajouter categorie" class="btn btn-secondary ">
-    </div> 
-</form><br>
+
+ <form action="{{ path('categoriesbackoffice.add') }}" >
+    <button type="submit" class="btn btn-secondary">Ajouter une catégorie</button>
+</form>    
+
 <br><br>
 <table class="table table-striped">
     <caption>Categories</caption>

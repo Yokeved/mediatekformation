@@ -1,14 +1,19 @@
 <?php
+
 namespace App\BackOffice\Controller;
 
 use App\BackOffice\Repository\CategorieRepository;
 use App\BackOffice\Repository\FormationRepository;
 use App\BackOffice\Repository\PlaylistRepository;
+use App\BackOffice\Entity\Playlist;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\BackOffice\Form\PlaylistType;
+use Symfony\Component\Form\AbstractType;
+
 
 
 /**
@@ -36,6 +41,8 @@ class PlaylistsController extends AbstractController
      * @var CategorieRepository
      */
     private $categorieRepository;
+
+    public const PLAYLISTS_TEMPLATE = 'backoffice/pages/playlists.html.twig';
     
     public function __construct(
         PlaylistRepository $playlistRepository,
@@ -55,7 +62,7 @@ class PlaylistsController extends AbstractController
     {
         $playlists = $this->playlistRepository->findAllOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
-        return $this->render("backoffice/pages/playlists.html.twig", [
+        return $this->render(self::PLAYLISTS_TEMPLATE, [
             'playlists' => $playlists,
             'categories' => $categories,
         ]);
@@ -69,16 +76,14 @@ class PlaylistsController extends AbstractController
      */
     public function sort($champ, $ordre): Response
     {
-        switch($champ){
-        case "name":
+        if ($champ == "name") {
             $playlists = $this->playlistRepository->findAllOrderByName($ordre);
-        break;
-        case "nbformations":
+        } elseif ($champ == "nbformations") {
             $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
-        break;
         }
+        
             $categories = $this->categorieRepository->findAll();
-        return $this->render("backoffice/pages/playlists.html.twig", [
+        return $this->render(self::PLAYLISTS_TEMPLATE, [
             'playlists' => $playlists,
             'categories' => $categories
         ]);
@@ -95,7 +100,7 @@ class PlaylistsController extends AbstractController
         $valeur = $request->get("recherche");
         $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("backoffice/pages/playlists.html.twig", [
+        return $this->render(self::PLAYLISTS_TEMPLATE, [
             'playlists' => $playlists,
             'categories' => $categories,
             'valeur' => $valeur,
@@ -115,7 +120,7 @@ class PlaylistsController extends AbstractController
         $playlists = $this->playlistRepository->findByContainValueInTable($champ, $valeur, $table);
 
         $categories = $this->categorieRepository->findAll();
-        return $this->render("backoffice/pages/playlists.html.twig", [
+        return $this->render(self::PLAYLISTS_TEMPLATE, [
             'playlists' => $playlists,
             'categories' => $categories,
             'valeur' => $valeur,
@@ -165,23 +170,6 @@ class PlaylistsController extends AbstractController
         return $this->redirectToRoute('playlistsbackoffice');
     }
 
-    /**
-     * @Route("/backoffice/playlistadd", name="playlistsbackoffice.add")
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $formations = $this->formationRepository->findAll();
-        $playlists = $this->playlistRepository->findAll();
-
-
-        return $this->render('backoffice/pages/playlistadd.html.twig', [
-            'formations' => $formations,
-            'playlists' => $playlists,
-        ]);
-    }
 
     
     /**
@@ -198,10 +186,30 @@ class PlaylistsController extends AbstractController
         $playlist = $this->playlistRepository->find($id);
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
+        
+        $form = $this->createForm(PlaylistType::class, $playlist);
+ 
+         $form->handleRequest($request);
+ 
+         if ($form->isSubmitted() && $form->isValid()) {
+            $name = $form->get('name')->getData();
+            $description = $form->get('description')->getData();
+
+
+            $playlist->setName($name);
+            $playlist->setDescription($description);
+            $entityManager->persist($playlist);
+            $entityManager->flush();
+        
+            $this->addFlash('success', 'Playlist ajoutée avec succès !');
+        
+            return $this->redirectToRoute('playlistsbackoffice');
+        }
 
         $entityManager->flush();
 
         return $this->render('backoffice/pages/playlistedit.html.twig', [
+            'form' => $form->createView(),
             'formations' => $formations,
             'playlists' => $playlists,
             'playlist'  => $playlist,
@@ -209,6 +217,40 @@ class PlaylistsController extends AbstractController
             'playlistformations' => $playlistFormations
         ]);
     }
+
+    /**
+     * @Route("/backoffice/formationadd", name="playlistsbackoffice.add")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+   
+     public function add(Request $request, EntityManagerInterface $entityManager): Response
+     {
+         $playlist = new playlist();
+         $form = $this->createForm(PlaylistType::class, $playlist);
+ 
+         $form->handleRequest($request);
+ 
+         if ($form->isSubmitted() && $form->isValid()) {
+            $name = $form->get('name')->getData();
+            $description = $form->get('description')->getData();
+
+
+            $playlist->setName($name);
+            $playlist->setDescription($description);
+            $entityManager->persist($playlist);
+            $entityManager->flush();
+        
+            $this->addFlash('success', 'Playlist ajoutée avec succès !');
+        
+            return $this->redirectToRoute('playlistsbackoffice');
+        }
+ 
+         return $this->render('backoffice/pages/playlistadd.html.twig', [
+             'form' => $form->createView(),
+         ]);
+     }
 
 }
 

@@ -10,16 +10,25 @@
                     grid-column-gap: 10px;
                 }
             </style>
-
-        <h4 class="text-info mt-5">
-            <form method="post" action="{{ path('formationsbackoffice.edit', {id: formation.id}) }}" class="form-grid">
-                <label for="title" style="grid-column: 1;">Titre :</label>
-                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="title" name="title" value="{{ formation.title }}" required style="grid-column: 2;"><br>
-                <label for="description" style="grid-column: 1;">Description :</label>
-                <textarea class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="description" name="description" style="grid-column: 2;">{{ formation.description }}</textarea><br>
-                <label for="videoid" style="grid-column: 1;">ID de la vidéo YouTube :</label>
-                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" type="url" id="videoid" name="videoid" value="{{ formation.videoid }}" required style="grid-column: 2;"><br>
-                <label for="playlist" style="grid-column: 1;">Playlist :</label>
+            <div> 
+            <h4 class="text-info mt-5">  
+                <form method="post" action="{{ path('formationsbackoffice.edit', {id:formation.id}) }}" class="form-grid">
+                    {{ form_start(form) }}
+                        {{ form_row(form.title, {'attr': {'value': formation.title , 'class': 'form-control form-control-lg'}}) }}<br>
+                        {{ form_row(form.description, {'attr': {'value': formation.description , 'class': 'form-control form-control-lg'}}) }}<br>
+                        {{ form_row(form.videoId, {'attr': {'value': formation.videoId , 'class': 'form-control form-control-lg'}}) }}<br>
+                        {{ form_row(form.publishedatstring, {'attr': {'value': formation.publishedatstring , 'class': 'form-control form-control-lg'}}) }}                        
+                        {{ form_row(form.playlist, {'attr': {'value': formation.playlist , 'class': 'form-control form-control-lg'}}) }}<br>
+                        {{ form_widget(form)}}
+                         <div style="text-align: center;">
+                            <br><br>
+                            <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+                        </div>
+                    {{ form_end(form) }}
+                   
+                </form>
+            </h4>        
+        </div>
                     <select class="form-select form-select-lg form-control" required name="recherche" id="recherche" onchange="this.form.submit()">
                             <option value=""></option>
                             {% for playlist in playlists %}
@@ -48,15 +57,6 @@
                             <label class="form-check-label" for="categorie-{{ categorie.id }}">{{ categorie.name }}</label>
                         </div>
                     {% endfor %}
-                </div><br>
-                <label for="publishedatstring" style="grid-column: 1;">Publié le :</label>
-                <input class="form-control form-control-lg" type="date" id="published" name="datetime" value="{{ formation.publishedatstring|date('Y-m-d') }}" max="{{ 'now'|date('Y-m-d') }}" style="grid-column: 2;"><br>
-                <div style="text-align: center;">
-                <br><br>
-                    <input type="submit" value="Enregister" class="btn btn-secondary ">
-                </div>
-            </form>
-        </h4>
 
         </div>
     </div>

@@ -34,7 +34,8 @@ class PlaylistsController extends AbstractController
      * @var CategorieRepository
      */
     private $categorieRepository;
-    
+    public const PLAYLISTS_TEMPLATE = 'pages/playlists.html.twig';
+
     public function __construct(
         PlaylistRepository $playlistRepository,
         CategorieRepository $categorieRepository,
@@ -53,7 +54,7 @@ class PlaylistsController extends AbstractController
     {
         $playlists = $this->playlistRepository->findAllOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        return $this->render(self::PLAYLISTS_TEMPLATE, [
             'playlists' => $playlists,
             'categories' => $categories
         ]);
@@ -67,16 +68,14 @@ class PlaylistsController extends AbstractController
     */
     public function sort($champ, $ordre): Response
     {
-        switch($champ){
-        case "name":
+        if ($champ == "name") {
             $playlists = $this->playlistRepository->findAllOrderByName($ordre);
-        break;
-        case "nbformations":
+        } elseif ($champ == "nbformations") {
             $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
-        break;
         }
-            $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        
+        $categories = $this->categorieRepository->findAll();
+        return $this->render(self::PLAYLISTS_TEMPLATE, [
             'playlists' => $playlists,
             'categories' => $categories
         ]);
@@ -98,7 +97,7 @@ class PlaylistsController extends AbstractController
             $playlists = $this->playlistRepository->findByContainValueInTable($champ, $valeur, $table);
         }
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        return $this->render(self::PLAYLISTS_TEMPLATE, [
             'playlists' => $playlists,
             'categories' => $categories,
             'valeur' => $valeur,

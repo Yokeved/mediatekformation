@@ -11,14 +11,11 @@
             </style>
 
         <h4 class="text-info mt-5">
-            <form method="post" action="{{ path('playlistsbackoffice.add') }}" class="form-grid">
-                <label for="title" style="grid-column: 1;">Nom :</label>
-                <input class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="name" name="name" value="" required style="grid-column: 2;"><br>
-                <label for="description" style="grid-column: 1;">Description :</label>
-                <textarea class="form-control form-control-lg" type="text" aria-label=".form-control-lg example" id="description" name="description" style="grid-column: 2;"></textarea><br>
-                <div style="text-align: center;">
+            {{ form_start(form) }}
+            {{ form_widget(form)}}
+             <div style="text-align: center;">
                 <br><br>
-                    <input type="submit" value="Enregistrer" class="btn btn-secondary ">
-                </div>    
-            </form>
+                <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+            </div>
+            {{ form_end(form) }}
 {% endblock %}
