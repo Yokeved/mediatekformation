@@ -71,18 +71,6 @@ class FormationType extends AbstractType
         ]);
     }
 
-    
-    private function getPlaylistChoices(): array
-    {
-        $choices = [];
-
-        $playlists = $this->entityManager->getRepository(Playlist::class)->findAll();
-        foreach ($playlists as $playlist) {
-            $choices[$playlist->getName()] = $playlist->getId();
-        }
-
-        return $choices;
-    }
 
     public function getPublishedAtString(): string
     {
