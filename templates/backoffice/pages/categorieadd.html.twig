@@ -12,7 +12,7 @@
 
         <h4 class="text-info mt-5">
             {{ form_start(form) }}
-            {{ form_widget(form)}}
+            {{ form_row(form.name, {'attr': {'class': 'form-control form-control-lg'}}) }}<br>
              <div style="text-align: center;">
                 <br><br>
                 <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>

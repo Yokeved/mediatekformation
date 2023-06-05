@@ -197,20 +197,11 @@ class FormationsController extends AbstractController
         $formation_categorie = $this->formationRepository->find($id);
         $playlists = $this->playlistRepository->findAll();
 
-        $form = $this->createForm(FormationType::class, $formations);
+        $form = $this->createForm(FormationType::class, $formation);
  
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-        $title = $form->get('title')->getData();
-        $description = $form->get('description')->getData();
-        $videoId = $form->get('videoId')->getData();
-        $publishedatstring = $form->get('publishedatstring')->getData();
-
-        $formation->setTitle($title);
-        $formation->setVideoId($videoId);
-        $formation->setPublishedAt($publishedatstring);
-        $formation->setDescription($description);
 
         $entityManager->persist($formation);
             $entityManager->flush();
@@ -239,36 +230,34 @@ class FormationsController extends AbstractController
      */
    
      public function add(Request $request, EntityManagerInterface $entityManager): Response
-     {
-         $formation = new formation();
-         $form = $this->createForm(FormationType::class, $formation);
+    {
+        $formations = $this->formationRepository->findAll();
+        $categories = $this->categorieRepository->findAll();
+        $playlists = $this->playlistRepository->findAll();
+
+        $formation = new formation();
+        $form = $this->createForm(FormationType::class, $formation);
  
-         $form->handleRequest($request);
- 
-         if ($form->isSubmitted() && $form->isValid()) {
-            $title = $form->get('title')->getData();
-            $description = $form->get('description')->getData();
-            $videoId = $form->get('videoId')->getData();
-            $publishedatstring = $form->get('publishedatstring')->getData();
+        $form->handleRequest($request);
 
-            $formation->setTitle($title);
-            $formation->setVideoId($videoId);
-            $formation->setPublishedAt($publishedatstring);
-            $formation->setDescription($description);
-
-
-            $formation->setTitle($title);
-            $formation->setDescription($description);
-            $entityManager->persist($formation);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+        $entityManager->persist($formation);
             $entityManager->flush();
-        
-            $this->addFlash('success', 'Playlist ajoutée avec succès !');
-        
-            return $this->redirectToRoute('formationsbackoffice');
-        }
- 
+
+        return $this->redirectToRoute('formationsbackoffice');
+    }
+
+    $entityManager->flush();
+
         return $this->render('backoffice/pages/formationadd.html.twig', [
             'form' => $form->createView(),
+            'formations' => $formations,
+            'categories' => $categories,
+            'playlists' => $playlists,
+            'formation' => $formation,
         ]);
+        
     }
+
 }

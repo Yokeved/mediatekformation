@@ -1,23 +1,16 @@
 {% extends "backoffice/baseback.html.twig" %}
 {% block body %}
-    <style>
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            grid-column-gap: 10px;
-        }
-    </style>
      <div> 
      <h4 class="text-info mt-5">  
         <form method="post" action="{{ path('playlistsbackoffice.edit', {id:playlist.id}) }}" class="form-grid">
             {{ form_start(form) }}
-                {{ form_row(form.name, {'attr': {'value': playlist.name}}) }}
-                {{ form_row(form.description, {'attr': {'value': playlist.description}}) }}
+                {{ form_row(form.name, {'attr': {'value': playlist.name, 'class': 'form-control form-control-lg'}}) }}<br>
+                {{ form_row(form.description, {'attr': {'value': playlist.description, 'class': 'form-control form-control-lg'}}) }}
                 {{ form_widget(form)}}
                  <div style="text-align: center;">
                     <br><br>
                     <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
-                </div>
+                </div><br>
             {{ form_end(form) }}
         </form>
      </h4>        

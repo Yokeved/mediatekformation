@@ -2,6 +2,7 @@
 
 namespace App\BackOffice\Entity;
 
+use App\BackOffice\Entity\Playlist;
 use App\BackOffice\Repository\FormationRepository;
 use App\BackOffice\Controller\FormationsController;
 use DateTimeInterface;
@@ -58,6 +59,7 @@ class Formation
 
     public function __construct()
     {
+        $this->publishedAt = new \DateTime();
         $this->categories = new ArrayCollection();
     }
 
@@ -77,7 +79,7 @@ class Formation
 
         return $this;
     }
-    
+
     public function getPublishedAtString(): string
     {
         if ($this->publishedAt == null) {
@@ -151,7 +153,7 @@ class Formation
     {
         return $this->categories;
     }
-
+    
     public function addCategory(Categorie $category): self
     {
         if (!$this->categories->contains($category)) {
@@ -168,8 +170,4 @@ class Formation
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->getPlaylist;
-    }
 }

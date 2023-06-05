@@ -1,25 +1,39 @@
 {% extends "backoffice/baseback.html.twig" %}
 
 {% block body %}
-    <h2 class="mb-4">Ajouter une formation</h2>
-
+    <div class="row mt-3">
+        <div class="col">
+            <style>
+                .form-grid {
+                    display: grid;
+                    grid-template-columns: 2fr;
+                    grid-column-gap: 10px;
+                }
+            </style>
+        <div> 
+    <h2 align="center">Ajouter une formation</h2>
+    <h4 class="text-info mt-5">
         <form method="post" action="{{ path('formationsbackoffice.add') }}" class="form-grid">
-            {{ form_start(form) }}
-            <label for="title" style="grid-column: 1;">Titre :</label>
-            {{ form_widget(form.title, {'attr': {'class': 'form-control form-control-lg', 'style': 'grid-column: 2;'}, 'label_attr': {'style': 'grid-column: 1;'}}) }}<br>
-            <label for="description" style="grid-column: 1;">Description :</label>
-            {{ form_widget(form.description, {'attr': {'class': 'form-control form-control-lg', 'style': 'grid-column: 2;'}, 'label_attr': {'style': 'grid-column: 1;'}}) }}<br>
-            <label for="videoid" style="grid-column: 1;">ID de la vidéo YouTube :</label>
-            {{ form_widget(form.videoId, {'attr': {'class': 'form-control form-control-lg', 'type': 'url', 'style': 'grid-column: 2;'}, 'label_attr': {'style': 'grid-column: 1;'}}) }}<br>
-            {{ form_label(form.publishedatstring, 'Publié le :', {'label_attr': {'style': 'grid-column: 1;'}}) }}
-            {{ form_widget(form.publishedatstring, {'attr': {'class': 'form-control form-control-lg', 'style': 'grid-column: 2;', 'type': 'date', max : 'now'|date('Y-m-d') }}) }}
-            {{ form_errors(form.publishedatstring) }}
-            <div style="text-align: center;">
-                <br><br>
+        {{ form_start(form) }}
+            {{ form_row(form.title, {'attr': {'class': 'form-control form-control-lg'}}) }}<br>
+            {{ form_row(form.description, {'attr': {'class': 'form-control form-control-lg'}}) }}<br>
+            {{ form_row(form.videoId, {'attr': {'class': 'form-control form-control-lg'}}) }}<br>
+            {{ form_row(form.publishedatstring, {'attr': {'class': 'form-control form-control-lg'}}) }} <br>                        
+            <label for="categories" style="grid-column: 1;">Catégories :</label>
+            <div class="form-select form-select-lg form-control">
+                {% for categorie in form.categories %}
+                    {{ form_row(categorie, {'label': categorie.vars.label, 'attr': {'class': 'form-check-input'}}) }}
+                {% endfor %}
+            </div><br>
+            {{ form_row(form.playlist, {'attr': {'class': 'form-control form-control-lg'}}) }}
+            {{ form_widget(form)}}
+             <div style="text-align: center;">
+            <br><br>
                 <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
             </div>
-                    {{ form_end(form) }}
+        {{ form_end(form) }}
         </form>
-
+    </h4>
+    </div>
 {% endblock %}
 

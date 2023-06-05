@@ -110,7 +110,7 @@ class CategoriesController extends AbstractController
             $name = $form->get('name')->getData();
             $existingCat = $this->categorieRepository->findBy(['name' => $name]);
 
-            if (!$existingCat) { // Si aucune catégorie n'existe avec ce nom
+            if (!$existingCat) {
                 $categorie->setName($name);
                 $entityManager->persist($categorie);
                 $entityManager->flush();

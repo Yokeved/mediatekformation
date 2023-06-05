@@ -3,61 +3,29 @@
 {% block body %}
     <div class="row mt-3">
         <div class="col">
-            <style>
-                .form-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 2fr;
-                    grid-column-gap: 10px;
-                }
-            </style>
             <div> 
+            <h2 align="center">Modifier la formation</h2>
             <h4 class="text-info mt-5">  
                 <form method="post" action="{{ path('formationsbackoffice.edit', {id:formation.id}) }}" class="form-grid">
                     {{ form_start(form) }}
                         {{ form_row(form.title, {'attr': {'value': formation.title , 'class': 'form-control form-control-lg'}}) }}<br>
                         {{ form_row(form.description, {'attr': {'value': formation.description , 'class': 'form-control form-control-lg'}}) }}<br>
                         {{ form_row(form.videoId, {'attr': {'value': formation.videoId , 'class': 'form-control form-control-lg'}}) }}<br>
-                        {{ form_row(form.publishedatstring, {'attr': {'value': formation.publishedatstring , 'class': 'form-control form-control-lg'}}) }}                        
-                        {{ form_row(form.playlist, {'attr': {'value': formation.playlist , 'class': 'form-control form-control-lg'}}) }}<br>
+                        {{ form_row(form.publishedatstring, {'attr': {'value': formation.publishedatstring, 'class': 'form-control form-control-lg'}}) }} <br>                        
+                        <label for="categories">Catégories :</label>
+                        <div class="form-select form-select-lg form-control">
+                            {% for categorie in form.categories %}
+                                {{ form_row(categorie, {'label': categorie.vars.label, 'attr': {'class': 'form-check-input'}}) }}
+                            {% endfor %}
+                        </div><br>
+                        {{ form_row(form.playlist, {'attr': {'value': formation.playlist.name, 'class': 'form-control form-control-lg'},'id': 'recherche','onchange': 'this.form.submit()'}) }}
                         {{ form_widget(form)}}
                          <div style="text-align: center;">
-                            <br><br>
+                            <br>
                             <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
                         </div>
                     {{ form_end(form) }}
-                   
                 </form>
             </h4>        
         </div>
-                    <select class="form-select form-select-lg form-control" required name="recherche" id="recherche" onchange="this.form.submit()">
-                            <option value=""></option>
-                            {% for playlist in playlists %}
-                                <option 
-                                     {% if formation.playlist and formation.playlist.id == playlist.id %} 
-                                        selected
-                                    {% endif %} 
-                                    value="{{ playlist.id }}">{{ playlist.name }}
-                                </option>
-                            {% endfor %}
-                        </select><br>
-                <label for="categories" style="grid-column: 1;">Catégories :</label>
-
-                <div class="form-select form-select-lg form-control" style="grid-column: 2;">
-                    {% for categorie in categories %}
-                        <div>
-                            {% if formation_categorie %}
-                                {% if categorie.id in formation_categorie %}
-                                    <input class="form-check-input" type="checkbox" id="categorie-{{ categorie.id }}" name="categories[]" value="{{ categorie.id }}" checked>
-                                {% else %}
-                                    <input class="form-check-input" type="checkbox" id="categorie-{{ categorie.id }}" name="categories[]" value="{{ categorie.id }}">
-                                {% endif %}
-                            {% else %}
-                                <input class="form-check-input" type="checkbox" id="categorie-{{ categorie.id }}" name="categories[]" value="{{ categorie.id }}">
-                            {% endif %}
-                            <label class="form-check-label" for="categorie-{{ categorie.id }}">{{ categorie.name }}</label>
-                        </div>
-                    {% endfor %}
-
-        </div>
-    </div>
 {% endblock %}

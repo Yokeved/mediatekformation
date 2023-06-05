@@ -3,6 +3,7 @@
 namespace App\BackOffice\Form;
 
 use App\BackOffice\Entity\Formation;
+use App\BackOffice\Entity\Categorie;
 use App\BackOffice\Entity\Playlist;
 use App\BackOffice\Repository\PlaylistRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -38,10 +39,10 @@ class FormationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('publishedatstring', DateType::class, [
                 'mapped' => false,
-                'data' => $this->getPublishedAtString() != "" ? new \DateTime($this->getPublishedAtString()) : null,
                 'constraints' => [
                     new LessThanOrEqual('today'),
                 ],
@@ -52,7 +53,7 @@ class FormationType extends AbstractType
             ->add('description', TextType::class, [
                 'mapped' => false,
             ])
-            ->add('videoId', UrlType::class, [
+            ->add('videoId', TextType::class, [
                 'mapped' => false,
             ])
             ->add('playlist', EntityType::class, [
@@ -60,14 +61,20 @@ class FormationType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'Sélectionnez une playlist',
                 'required' => true,
+            ])
+            ->add('categories', EntityType::class, [
+                'class' => Categorie::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Sélectionnez une ou plusieurs catégories',
+                'multiple' => true,
+                'expanded' => true,
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => null ,
+            'data_class' => \App\BackOffice\Entity\Formation::class
         ]);
     }
 
